@@ -2,4 +2,6 @@
     <string name="app_name">ExWS1</string>
     <string name="resultado">resultado</string>
     <string name="buscar_resultado">Buscar resultado</string>
+    <string name="resultado_pesquisa">resultado pesquisa</string>
+    <string name="informe_o_cep_desejado">Informe o CEP desejado:</string>
 </resources>

@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,9 +17,12 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.net.ssl.HttpsURLConnection;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView textResultado;
+    private TextView textCEP;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +30,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         textResultado = findViewById(R.id.textResultado);
+        textCEP = findViewById(R.id.textCEP);
 
     }
 
     public void acaoBusca(View v){
-        String urlBusca = "https://viacep.com.br/ws/80610290/json/";
-
+        String urlBusca = "https://viacep.com.br/ws/" + textCEP + "/json/";
+        //String urlBusca = "https://viacep.com.br/ws/80230040/json/";
         Busca busca = new Busca();
         busca.execute(urlBusca);
 
@@ -49,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 URL url = new URL(urlString);
 
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String linha = "";
@@ -77,7 +84,17 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            textResultado.setText(s);
+            String resultado = "";
+            try {
+                JSONObject principal = new JSONObject(s);
+                String cidade = principal.getString( "localidade");
+                String uf = principal.getString("uf");
+                resultado = "CIDADE: " + cidade + "\n" + "UF: " + uf + "\n";
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            textResultado.setText(resultado);
 
         }
     }
