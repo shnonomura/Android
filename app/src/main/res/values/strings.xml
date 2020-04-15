@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ExWS1</string>
+    <string name="resultado">resultado</string>
+    <string name="buscar_resultado">Buscar resultado</string>
+</resources>
